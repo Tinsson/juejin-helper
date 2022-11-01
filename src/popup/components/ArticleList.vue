@@ -55,7 +55,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <div>
+  <div class="essay-outer">
     <div>
       <a
         v-for="item in articleList"
@@ -90,6 +90,14 @@ export default defineComponent({
 </template>
 
 <style scoped>
+.essay-outer {
+  flex: 1;
+  box-sizing: border-box;
+  padding: 0 12px;
+  min-height: 200px;
+  max-height: 320px;
+  overflow-y: scroll;
+}
 .essay-list {
   box-sizing: border-box;
   width: 100%;

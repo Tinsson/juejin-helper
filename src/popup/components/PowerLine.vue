@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, ref, onMounted } from 'vue'
+import { defineComponent, ref, onMounted, onBeforeUnmount } from 'vue'
 import { getCurPower, getPowerList } from '~/popup/apis'
 import { Chart } from '@antv/g2'
 
@@ -35,6 +35,7 @@ export default defineComponent({
   setup() {
     const jpower = ref<number>(0)
     const powerList = ref<IPowerDetail[]>([])
+    const chartRef = ref(null)
 
     const initChart = (data) => {
       const chart = new Chart({
@@ -42,6 +43,7 @@ export default defineComponent({
         autoFit: true,
         height: 500
       })
+      chartRef.value = chart
       chart.data(data)
       chart.scale({
         jpower: {
@@ -124,6 +126,10 @@ export default defineComponent({
       chart.render()
     }
 
+    onBeforeUnmount(() => {
+      chartRef.value.destroy()
+    })
+
     const initPower = async () => {
       const res1 = await getCurPower()
       let innerPower = 0
@@ -177,7 +183,7 @@ export default defineComponent({
   color: #1e80ff;
 }
 .chart-container {
-  width: 450px;
+  width: 445px;
   height: 250px;
 }
 </style>

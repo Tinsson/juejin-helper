@@ -55,9 +55,9 @@ export default defineComponent({
       <div v-if="tabKey === 'card'" class="content-box">
         <data-card />
       </div>
-      <div v-if="tabKey === 'list'" class="content-box">
+      <template v-if="tabKey === 'list'">
         <article-list />
-      </div>
+      </template>
     </div>
   </div>
 </template>
