@@ -1,0 +1,41 @@
+{
+  "name": "掘金作者小助手",
+  "version": "0.0.1",
+  "manifest_version": 3,
+  "author": "dty6809183@gmail.com",
+  "description": "好用的掘金创作者工具",
+  "icons": {
+    "16": "/assets/dev.png",
+    "48": "/assets/dev.png",
+    "96": "/assets/dev.png",
+    "128": "/assets/dev.png"
+  },
+  "action": {
+    "default_title": "小助手",
+    "default_popup": "/popup/index.html"
+  },
+  "permissions": [
+    "tabs",
+    "activeTab",
+    "scripting",
+    "declarativeNetRequest"
+  ],
+  "host_permissions": [
+    "http://*/",
+    "https://*/"
+  ],
+  "background": {
+    "service_worker": "/background/index.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["/contentScript/index.js"],
+      "run_at": "document_end"
+    }
+  ],
+  "web_accessible_resources": [{
+    "resources": ["contentScript/style.css"],
+    "matches": ["<all_urls>"]
+  }]
+}
