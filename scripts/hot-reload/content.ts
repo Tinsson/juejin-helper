@@ -26,6 +26,11 @@ const hotReloadContent = (): Plugin => {
         connectWs() 
       }
     },
+    transform(code, id) {
+      if (id.indexOf('node_modules') === -1) {
+        console.log(id)
+      }
+    },
     writeBundle() {
       // 通过socket触发reload
       if (wsClient && isReady) {

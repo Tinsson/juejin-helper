@@ -34,6 +34,7 @@ const reverseList = (list) => {
 export default defineComponent({
   setup() {
     const jpower = ref<number>(0)
+    const avgPower = ref<string>('0')
     const powerList = ref<IPowerDetail[]>([])
     const chartRef = ref(null)
 
@@ -149,6 +150,10 @@ export default defineComponent({
           innerPower = innerPower - changeNum
           return showList
         })
+        avgPower.value = (
+          realList.map((i) => i.changeNum).reduce((a, b) => a + b) /
+          realList.length
+        ).toFixed(1)
         powerList.value = realList
         initChart(reverseList(realList))
       }
@@ -160,6 +165,7 @@ export default defineComponent({
 
     return {
       jpower,
+      avgPower,
       powerList
     }
   }
@@ -168,15 +174,28 @@ export default defineComponent({
 
 <template>
   <div>
-    <div>
-      <span>当前掘力值：</span>
-      <span class="power-num">{{ jpower }}</span>
+    <div class="shop-tip">
+      <div>
+        <span>当前掘力值：</span>
+        <span class="power-num">{{ jpower }}</span>
+      </div>
+      <div class="growth-box">
+        <span>每日平均增长值：</span>
+        <span class="power-num">{{ avgPower }}</span>
+      </div>
     </div>
     <div id="jpower-chart" class="chart-container"></div>
   </div>
 </template>
 
 <style scoped>
+.shop-tip {
+  display: flex;
+  flex-flow: row nowrap;
+}
+.growth-box {
+  margin-left: 12px;
+}
 .power-num {
   font-weight: 400;
   font-size: 26px;
