@@ -60,7 +60,7 @@ export const getNoticeCount = () => {
   return ajax.get(urlSite('juejin', '/interact_api/v1/message/count'))
 }
 
-const getUserId = async () => {
+export const getUserId = async () => {
   const userCache = getLocalObj('juejin-user')
   if (userCache) {
     return userCache.user_id
@@ -149,6 +149,47 @@ export const getCardInfo = async () => {
     {
       datas,
       user_id
+    }
+  )
+}
+
+export const getTrendData = async (dateRange: number, datas: string[]) => {
+  await setJuejinOrigin()
+  const user_id = await getUserId()
+
+  return ajax.post(
+    urlSite(
+      'juejin',
+      '/content_api/v1/author_center/data/trend?aid=2608&uuid=6896770031675213319&spider=0'
+    ),
+    {
+      item_type: 1,
+      datas,
+      item_id: user_id,
+      date_range: dateRange
+    }
+  )
+}
+
+export const getArticleTrend = async (dateRange: number, articleId: string) => {
+  await setJuejinOrigin()
+
+  return ajax.post(
+    urlSite(
+      'juejin',
+      '/content_api/v1/author_center/data/trend?aid=2608&uuid=6896770031675213319&spider=0'
+    ),
+    {
+      item_type: 2,
+      datas: [
+        'incr_article_display',
+        'incr_article_view',
+        'incr_article_digg',
+        'incr_article_comment',
+        'incr_article_collect'
+      ],
+      item_id: articleId,
+      date_range: dateRange
     }
   )
 }

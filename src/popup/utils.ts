@@ -9,3 +9,17 @@ export const getLocalObj = (keyName: string) => {
 export const setLocalObj = (keyName: string, data: Record<string, any>) => {
   localStorage.setItem(keyName, JSON.stringify(data))
 }
+
+export const sendMessage = (taskId: string, params: any) => {
+  return new Promise((resolve) => {
+    chrome.runtime.sendMessage(
+      {
+        taskId,
+        params
+      },
+      (result) => {
+        resolve(result)
+      }
+    )
+  })
+}

@@ -1,10 +1,11 @@
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent } from 'vue'
 import { ElMenu, ElMenuItem, ElIcon } from 'element-plus'
 import CusHeader from './components/CusHeader.vue'
-import DataCard from './components/DataCard.vue'
+import DataCard from './components/data-card/CardIndex.vue'
 import ArticleList from './components/ArticleList.vue'
 import PowerLine from './components/PowerLine.vue'
+import { useLocalRef } from './hooks'
 
 export default defineComponent({
   components: {
@@ -17,7 +18,7 @@ export default defineComponent({
     PowerLine
   },
   setup() {
-    const tabKey = ref<string>('power')
+    const tabKey = useLocalRef<string>('popup-tab-key', 'power')
 
     const handleMenuSelect = (newKey: string) => {
       tabKey.value = newKey
@@ -35,7 +36,7 @@ export default defineComponent({
   <div class="app-root">
     <cus-header />
     <div class="center-line">
-      <el-menu default-active="power" @select="handleMenuSelect">
+      <el-menu :default-active="tabKey" @select="handleMenuSelect">
         <el-menu-item index="power">
           <el-icon><TrendCharts /></el-icon>
           <span>掘力值</span>

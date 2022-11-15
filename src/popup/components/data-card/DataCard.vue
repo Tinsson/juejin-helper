@@ -20,6 +20,7 @@ interface ICardInfo {
 interface ICardItem {
   name: string
   keyName: string
+  trendKey: string
 }
 
 export default defineComponent({
@@ -28,7 +29,10 @@ export default defineComponent({
     ElCol,
     ElCard
   },
-  setup() {
+  props: {
+    cardClick: Function
+  },
+  setup(_props, context) {
     const cardData = ref<ICardInfo>({
       all_article_collect: {
         cnt: 0,
@@ -59,27 +63,33 @@ export default defineComponent({
     const cardList = ref<ICardItem[]>([
       {
         name: '总关注者数',
-        keyName: 'all_follower'
+        keyName: 'all_follower',
+        trendKey: 'all_follower'
       },
       {
         name: '文章展现数',
-        keyName: 'all_article_display'
+        keyName: 'all_article_display',
+        trendKey: 'incr_article_display'
       },
       {
         name: '文章阅读数',
-        keyName: 'all_article_view'
+        keyName: 'all_article_view',
+        trendKey: 'incr_article_view'
       },
       {
         name: '文章点赞数',
-        keyName: 'all_article_digg'
+        keyName: 'all_article_digg',
+        trendKey: 'incr_article_digg'
       },
       {
         name: '文章评论数',
-        keyName: 'all_article_comment'
+        keyName: 'all_article_comment',
+        trendKey: 'incr_article_comment'
       },
       {
         name: '文章收藏数',
-        keyName: 'all_article_collect'
+        keyName: 'all_article_collect',
+        trendKey: 'incr_article_collect'
       }
     ])
 
@@ -88,9 +98,15 @@ export default defineComponent({
       cardData.value = res.datas
     })
 
+    const handleCardClick = (dataKey: string) => {
+      console.log(dataKey)
+      context.emit('cardClick', [dataKey])
+    }
+
     return {
       cardData,
-      cardList
+      cardList,
+      handleCardClick
     }
   }
 })
@@ -106,6 +122,7 @@ export default defineComponent({
           :body-style="{
             padding: '10px 12px'
           }"
+          @click="handleCardClick(item.trendKey)"
         >
           <div class="card-title">{{ item.name }}</div>
           <div class="card-data">{{ cardData[item.keyName].cnt }}</div>
@@ -139,6 +156,7 @@ export default defineComponent({
   background: #f7f8fa;
   border: none;
   margin-bottom: 12px;
+  cursor: pointer;
 }
 .card-title {
   color: #4e5969;

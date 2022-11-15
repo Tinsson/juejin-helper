@@ -11,7 +11,7 @@
     "128": "/assets/dev.png"
   },
   "action": {
-    "default_title": "小助手",
+    "default_title": "掘金作者小助手",
     "default_popup": "/popup/index.html"
   },
   "permissions": [
@@ -21,8 +21,8 @@
     "declarativeNetRequest"
   ],
   "host_permissions": [
-    "http://*/",
-    "https://*/"
+    "https://juejin.cn/",
+    "https://api.juejin.cn/"
   ],
   "background": {
     "service_worker": "/background/index.js"

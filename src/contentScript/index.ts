@@ -22,3 +22,6 @@
 //   const app = createApp(App)
 //   app.mount(root)
 // })()
+import { monitorBadgeFresh } from './event'
+
+monitorBadgeFresh()

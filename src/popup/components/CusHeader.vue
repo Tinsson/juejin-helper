@@ -8,7 +8,7 @@ import {
   ElDropdownItem
 } from 'element-plus'
 import { getUserInfo, getNoticeCount } from '~/popup/apis'
-import { getLocalObj, setLocalObj } from '~/popup/utils'
+import { getLocalObj, setLocalObj, sendMessage } from '~/popup/utils'
 
 interface IUser {
   avatar_large: string
@@ -75,6 +75,7 @@ export default defineComponent({
     const initCount = async () => {
       const res = await getNoticeCount()
       noticeInfo.value = res
+      sendMessage('set-badge-bg', res)
     }
 
     onMounted(async () => {

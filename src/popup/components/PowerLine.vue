@@ -36,6 +36,7 @@ export default defineComponent({
     const jpower = ref<number>(0)
     const avgPower = ref<string>('0')
     const powerList = ref<IPowerDetail[]>([])
+    const tenSum = ref<number>(0)
     const chartRef = ref(null)
 
     const initChart = (data) => {
@@ -140,8 +141,10 @@ export default defineComponent({
       }
       const res2 = await getPowerList()
       if (res2) {
+        tenSum.value = 0
         const realList = res2.map((item) => {
           const changeNum = item.jpower
+          tenSum.value += changeNum
           const showList = {
             jpower: innerPower,
             changeNum,
@@ -166,6 +169,7 @@ export default defineComponent({
     return {
       jpower,
       avgPower,
+      tenSum,
       powerList
     }
   }
@@ -176,12 +180,16 @@ export default defineComponent({
   <div>
     <div class="shop-tip">
       <div>
-        <span>当前掘力值：</span>
+        <span>今日值：</span>
         <span class="power-num">{{ jpower }}</span>
       </div>
       <div class="growth-box">
-        <span>每日平均增长值：</span>
+        <span>日均增长：</span>
         <span class="power-num">{{ avgPower }}</span>
+      </div>
+      <div class="growth-box">
+        <span>10日增长：</span>
+        <span class="power-num">{{ tenSum }}</span>
       </div>
     </div>
     <div id="jpower-chart" class="chart-container"></div>
@@ -194,7 +202,7 @@ export default defineComponent({
   flex-flow: row nowrap;
 }
 .growth-box {
-  margin-left: 12px;
+  margin-left: 15px;
 }
 .power-num {
   font-weight: 400;
