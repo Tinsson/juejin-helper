@@ -10,6 +10,6 @@
 - 🕰 定时获取通知信息
 
 
-## 入群交流
-<img src="https://img01.yzcdn.cn/upload_files/2022/11/01/FhO_EADuOLHn9FHFhC9zAp_h9_OR.jpg" width="50%">
+## 加我VX入群交流
+<img src="https://img01.yzcdn.cn/upload_files/2022/11/17/Fu-vmW4Yirglm_Z6YA9-3mrjcPXH.jpg" width="50%">
 

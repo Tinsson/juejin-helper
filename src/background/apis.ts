@@ -10,6 +10,13 @@ methods.forEach((method) => {
     }
     if (method === 'post') {
       options.body = data
+    } else if (method === 'get') {
+      const paramsStr = Object.keys(data)
+        .map((keyName) => {
+          return `${keyName}=${data[keyName]}`
+        })
+        .join('&')
+      url += `?${paramsStr}`
     }
 
     return new Promise((resolve, reject) => {
