@@ -1,9 +1,9 @@
 {
-  "name": "掘金作者小助手",
-  "version": "0.0.3",
+  "name": "掘友小助手",
+  "version": "0.0.4",
   "manifest_version": 3,
   "author": "dty6809183@gmail.com",
-  "description": "好用的掘金创作者工具",
+  "description": "好用的掘金学习运营工具",
   "icons": {
     "16": "/assets/dev.png",
     "48": "/assets/dev.png",
@@ -11,18 +11,20 @@
     "128": "/assets/dev.png"
   },
   "action": {
-    "default_title": "掘金作者小助手",
+    "default_title": "掘友小助手",
     "default_popup": "/popup/index.html"
   },
   "permissions": [
     "tabs",
     "activeTab",
     "scripting",
+    "history",
     "declarativeNetRequest"
   ],
   "host_permissions": [
     "https://juejin.cn/",
-    "https://api.juejin.cn/"
+    "https://api.juejin.cn/",
+    "https://www.npmjs.com/"
   ],
   "background": {
     "service_worker": "/background/index.js"

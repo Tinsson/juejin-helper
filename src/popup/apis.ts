@@ -8,6 +8,13 @@ const ajax: Record<
   (url: string, data?: any, options?: any) => Promise<any>
 > = {}
 
+axios.interceptors.request.use(async (req) => {
+  if (req.url.indexOf('juejin.cn') > 0) {
+    await setJuejinOrigin()
+  }
+  return req
+})
+
 methods.forEach((method) => {
   ajax[method] = (url, data, options): Promise<any> => {
     data = data || {}
@@ -45,9 +52,10 @@ methods.forEach((method) => {
   }
 })
 
-const urlSite = (base: 'juejin', path: string) => {
+const urlSite = (base: string, path: string) => {
   const hostMap = {
-    juejin: 'https://api.juejin.cn'
+    juejin: 'https://api.juejin.cn',
+    npm: 'https://www.npmjs.com'
   }
   return `${hostMap[base]}${path}`
 }
@@ -70,7 +78,10 @@ export const getUserId = async () => {
   }
 }
 
-const setJuejinOrigin = async () => {
+const setCustomerHeader = async (
+  domain: string,
+  headers: Record<string, string>
+) => {
   await chrome.declarativeNetRequest.updateDynamicRules({
     addRules: [
       {
@@ -78,16 +89,16 @@ const setJuejinOrigin = async () => {
         priority: 1,
         action: {
           type: 'modifyHeaders',
-          requestHeaders: [
-            {
-              header: 'origin',
+          requestHeaders: Object.keys(headers).map((name) => {
+            return {
+              header: name,
               operation: 'set',
-              value: 'https://juejin.cn'
+              value: headers[name]
             }
-          ]
+          })
         },
         condition: {
-          urlFilter: 'juejin.cn',
+          urlFilter: domain,
           resourceTypes: ['xmlhttprequest']
         }
       }
@@ -96,8 +107,13 @@ const setJuejinOrigin = async () => {
   } as any)
 }
 
+const setJuejinOrigin = async (domain = 'juejin.cn') => {
+  await setCustomerHeader(domain, {
+    origin: `https://${domain}`
+  })
+}
+
 export const getArticleList = async (page = 1) => {
-  await setJuejinOrigin()
   return ajax.post(
     urlSite('juejin', '/content_api/v1/article/list_by_user'),
     {
@@ -113,7 +129,6 @@ export const getArticleList = async (page = 1) => {
 }
 
 export const getCurPower = async () => {
-  await setJuejinOrigin()
   return ajax.post(
     urlSite('juejin', '/growth_api/v1/user_growth/author_jpower'),
     {
@@ -123,7 +138,6 @@ export const getCurPower = async () => {
 }
 
 export const getPowerList = async () => {
-  await setJuejinOrigin()
   return ajax.post(
     urlSite('juejin', '/growth_api/v1/user_growth/author_jpower_detail'),
     {
@@ -134,7 +148,6 @@ export const getPowerList = async () => {
 }
 
 export const getCardInfo = async () => {
-  await setJuejinOrigin()
   const user_id = await getUserId()
   const datas = [
     'all_follower',
@@ -154,14 +167,10 @@ export const getCardInfo = async () => {
 }
 
 export const getTrendData = async (dateRange: number, datas: string[]) => {
-  await setJuejinOrigin()
   const user_id = await getUserId()
 
   return ajax.post(
-    urlSite(
-      'juejin',
-      '/content_api/v1/author_center/data/trend?aid=2608&uuid=6896770031675213319&spider=0'
-    ),
+    urlSite('juejin', '/content_api/v1/author_center/data/trend'),
     {
       item_type: 1,
       datas,
@@ -172,13 +181,8 @@ export const getTrendData = async (dateRange: number, datas: string[]) => {
 }
 
 export const getArticleTrend = async (dateRange: number, articleId: string) => {
-  await setJuejinOrigin()
-
   return ajax.post(
-    urlSite(
-      'juejin',
-      '/content_api/v1/author_center/data/trend?aid=2608&uuid=6896770031675213319&spider=0'
-    ),
+    urlSite('juejin', '/content_api/v1/author_center/data/trend'),
     {
       item_type: 2,
       datas: [
@@ -192,4 +196,30 @@ export const getArticleTrend = async (dateRange: number, articleId: string) => {
       date_range: dateRange
     }
   )
+}
+
+export const getDiggFollowArticles = async (searchWords: string) => {
+  const user_id = await getUserId()
+
+  return ajax.post(urlSite('juejin', '/search_api/v1/user/content'), {
+    cursor: '0',
+    key_word: searchWords,
+    limit: 20,
+    search_type: 0,
+    user_id
+  })
+}
+
+export const getNpmPackages = async (params: {
+  q: string
+  ranking?: string
+}) => {
+  await setCustomerHeader('www.npmjs.com', {
+    origin: 'www.npmjs.com',
+    'x-requested-with': 'XMLHttpRequest',
+    'x-spiferack': '1'
+  })
+  return ajax.get(urlSite('npm', '/search'), params, {
+    rawResponse: true
+  })
 }

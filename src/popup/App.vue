@@ -5,6 +5,7 @@ import CusHeader from './components/CusHeader.vue'
 import DataCard from './components/data-card/CardIndex.vue'
 import ArticleList from './components/ArticleList.vue'
 import PowerLine from './components/PowerLine.vue'
+import SuperSearch from './components/super-search/SuperSearch.vue'
 import { useLocalRef } from './hooks'
 
 export default defineComponent({
@@ -15,7 +16,8 @@ export default defineComponent({
     CusHeader,
     DataCard,
     ArticleList,
-    PowerLine
+    PowerLine,
+    SuperSearch
   },
   setup() {
     const tabKey = useLocalRef<string>('popup-tab-key', 'power')
@@ -49,6 +51,10 @@ export default defineComponent({
           <el-icon><document /></el-icon>
           <span>文章列表</span>
         </el-menu-item>
+        <el-menu-item index="search">
+          <el-icon><Search /></el-icon>
+          <span>超级搜索</span>
+        </el-menu-item>
       </el-menu>
       <div v-if="tabKey === 'power'" class="content-box">
         <power-line />
@@ -56,6 +62,9 @@ export default defineComponent({
       <div v-if="tabKey === 'card'" class="content-box">
         <data-card />
       </div>
+      <template v-if="tabKey === 'search'">
+        <super-search />
+      </template>
       <template v-if="tabKey === 'list'">
         <article-list />
       </template>
@@ -72,6 +81,9 @@ body {
   --helper-font2: #515767;
   --helper-font3: #8a919f;
   --helper-font4: #c2c8d1;
+  font-family: Chinese Quote, -apple-system, BlinkMacSystemFont, Segoe UI,
+    Roboto, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Helvetica Neue,
+    Helvetica, Arial, sans-serif;
 }
 a {
   text-decoration: none;
@@ -90,5 +102,18 @@ a {
   flex: 1;
   box-sizing: border-box;
   padding: 12px;
+}
+.scroll-content {
+  flex: 1;
+  box-sizing: border-box;
+  padding: 0 12px;
+  min-height: 200px;
+  max-height: 450px;
+  overflow-y: scroll;
+}
+.result-title em,
+.result-desc em {
+  color: red;
+  font-style: normal;
 }
 </style>
