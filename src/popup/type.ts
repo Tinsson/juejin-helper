@@ -25,7 +25,10 @@ export interface ISearchParams {
 export interface ISearchExtraItem {
   id: number
   name: string
-  search: (params: ISearchParams) => Promise<ISearchItem[]>
+  search: (params: ISearchParams) => Promise<{
+    list: ISearchItem[]
+    total: number
+  }>
   otherField?: {
     name: string
     options: Array<{

@@ -7,8 +7,8 @@
     "dev:code": "vite build",
     "dev:content": "vite build --config vite.content.config.ts",
     "dev:copy": "node scripts/monitor.js",
-    "build": "cross-env CRX_ENV=production pnpm clear && vite build && vite build --config vite.content.config.ts && node scripts/monitor.js",
-    "clear": "rimraf extension",
+    "build": "cross-env CRX_ENV=production pnpm clear && vite build && vite build --config vite.content.config.ts && node scripts/monitor.js && node scripts/createZip.js",
+    "clear": "rimraf extension && rimraf zip",
     "prepare": "husky install"
   },
   "author": "TinssonTai",
@@ -37,7 +37,8 @@
     "vite-plugin-eslint": "^1.8.1",
     "vite-plugin-replace": "^0.1.1",
     "vue": "^3.2.39",
-    "ws": "^8.9.0"
+    "ws": "^8.9.0",
+    "zip-folder": "^1.0.0"
   },
   "dependencies": {
     "@antv/g2": "^4.2.8",

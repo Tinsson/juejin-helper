@@ -20,8 +20,9 @@ const extraConfigs: ISearchExtraItem[] = [
     name: '掘金点赞/收藏/发布',
     search: async (params: ISearchParams) => {
       const res = await getDiggFollowArticles(params.searchWords)
+      let list = []
       if (res?.length > 0) {
-        return res.map((i) => ({
+        list = res.map((i) => ({
           id: i.article_id,
           title: i.article_info.title,
           url: `https://juejin.cn/post/${i.article_id}`,
@@ -39,7 +40,10 @@ const extraConfigs: ISearchExtraItem[] = [
           })
         }))
       }
-      return []
+      return {
+        list,
+        total: list.length
+      }
     }
   },
   {
@@ -75,8 +79,9 @@ const extraConfigs: ISearchExtraItem[] = [
         q: params.searchWords,
         ranking: params.ranking || ''
       })
+      let list = []
       if (res?.objects?.length > 0) {
-        return res.objects.map((i) => ({
+        list = res.objects.map((i) => ({
           id: i.package.name,
           title: highlightText(i.package.name, params.searchWords),
           url: `https://www.npmjs.com/package/${i.package.name}`,
@@ -92,7 +97,10 @@ const extraConfigs: ISearchExtraItem[] = [
           })
         }))
       }
-      return []
+      return {
+        total: res.total,
+        list
+      }
     }
   },
   {
@@ -135,7 +143,11 @@ const extraConfigs: ISearchExtraItem[] = [
           nowStamp - Number(params.timeEarly) * 1000 * 24 * 60 * 60
       }
       const res = await chrome.history.search(hisParams)
-      return formatChromeHistoryItem(params.searchWords, res)
+      const list = formatChromeHistoryItem(params.searchWords, res)
+      return {
+        list,
+        total: list.length
+      }
     }
   }
 ]
@@ -211,7 +223,10 @@ export default defineComponent({
     }
 
     const handleClickConfig = (config: ISearchExtraItem) => {
-      context.emit('change', [])
+      context.emit('change', {
+        list: [],
+        total: 0
+      })
       filterInfo.value = {
         ...filterInfo.value,
         curConfig: config,

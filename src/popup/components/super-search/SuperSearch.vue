@@ -15,9 +15,14 @@ export default defineComponent({
   setup(_props, context) {
     const hasSearch = ref(false)
     const result = ref<ISearchItem[]>([])
+    const total = ref(0)
 
-    const handleResultChange = (res: ISearchItem[]) => {
-      result.value = res
+    const handleResultChange = (res: {
+      list: ISearchItem[]
+      total: number
+    }) => {
+      result.value = res.list
+      total.value = res.total
       hasSearch.value = true
     }
 
@@ -25,6 +30,7 @@ export default defineComponent({
       handleResultChange,
       Search,
       result,
+      total,
       hasSearch
     }
   }
@@ -36,7 +42,7 @@ export default defineComponent({
     <search-trigger @change="handleResultChange"></search-trigger>
     <template v-if="hasSearch">
       <template v-if="result.length > 0">
-        <div class="length-tips">为你找到约 {{ result.length }} 个结果</div>
+        <div class="length-tips">为你找到约 {{ total }} 个结果</div>
         <div v-for="item in result" :key="item.id" class="result-box">
           <div class="result-left">
             <page-icon />
