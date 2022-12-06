@@ -27,16 +27,26 @@ export const sendMessage = (taskId: string, params: any) => {
   })
 }
 
+export const highlightText = (origin: string, words: string) => {
+  try {
+    const reg = new RegExp(`(${words})`, 'gi')
+    const res = origin.replace(reg, '<em>$1</em>')
+    return res
+  } catch (e) {
+    console.log(origin, words)
+    return origin
+  }
+}
+
 export const formatChromeHistoryItem = (
   searchWords: string,
   origin: chrome.history.HistoryItem[]
 ): ISearchItem[] => {
-  const reg = new RegExp(`(${searchWords})`, 'gi')
   return origin.map((i) => {
     return {
       id: i.id,
-      title: i.title.replace(reg, '<em>$1</em>'),
-      desc: i.url.replace(reg, '<em>$1</em>'),
+      title: highlightText(i.title, searchWords),
+      desc: highlightText(i.url, searchWords),
       lastTime: dayjs(i.lastVisitTime).format('YYYY-MM-DD HH:mm:ss'),
       url: i.url
     }

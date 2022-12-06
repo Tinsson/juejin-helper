@@ -11,3 +11,26 @@ export interface ISearchItem {
     url: string
   }>
 }
+
+/** 搜索函数入参 */
+export interface ISearchParams {
+  searchWords: string
+  ranking?: string
+  timeEarly?: string
+  page?: number
+  pageSize?: number
+}
+
+/** 搜索相关过滤配置信息 */
+export interface ISearchExtraItem {
+  id: number
+  name: string
+  search: (params: ISearchParams) => Promise<ISearchItem[]>
+  otherField?: {
+    name: string
+    options: Array<{
+      label: string
+      value: string
+    }>
+  }
+}

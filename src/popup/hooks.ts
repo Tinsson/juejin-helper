@@ -5,6 +5,7 @@ export const useLocalRef = <T>(keyName: string, defaultValue?: T) => {
   const localInfo = ref<T>(getLocalObj(keyName) || defaultValue || null)
 
   watch(localInfo, (newVal) => {
+    console.log(newVal)
     setLocalObj(keyName, newVal)
   })
 

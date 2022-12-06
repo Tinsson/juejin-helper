@@ -219,6 +219,11 @@ export const getNpmPackages = async (params: {
     'x-requested-with': 'XMLHttpRequest',
     'x-spiferack': '1'
   })
+  Object.keys(params).forEach((keyName) => {
+    if (params[keyName] === '') {
+      delete params[keyName]
+    }
+  })
   return ajax.get(urlSite('npm', '/search'), params, {
     rawResponse: true
   })
