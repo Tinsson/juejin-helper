@@ -187,7 +187,7 @@ export default defineComponent({
   box-sizing: border-box;
   height: 48px;
   padding: 0 8px 0 16px;
-  border-bottom: 1px solid #e5e6eb;
+  box-shadow: 0 1px 4px rgb(0 21 41 / 8%);
 }
 .head-title {
   color: var(--helper-font1);

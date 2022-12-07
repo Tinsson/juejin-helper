@@ -116,4 +116,7 @@ a {
   color: red;
   font-style: normal;
 }
+.el-menu {
+  background-color: transparent !important;
+}
 </style>
