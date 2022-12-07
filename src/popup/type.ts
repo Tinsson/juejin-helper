@@ -2,6 +2,7 @@ export interface ISearchItem {
   id: string | number
   title: string
   url: string
+  authorAvatar?: string
   author?: string
   authorLink?: string
   desc?: string

@@ -70,7 +70,12 @@ export default defineComponent({
                 'has-tag': !!item.tags
               }"
             >
-              <a v-if="item.author" :href="item.authorLink">
+              <a v-if="item.author" :href="item.authorLink" class="author-link">
+                <img
+                  v-if="item.authorAvatar"
+                  class="author-avatar"
+                  :src="item.authorAvatar"
+                />
                 <span class="result-bottom-text author-text">{{
                   item.author
                 }}</span>
@@ -186,8 +191,18 @@ export default defineComponent({
   margin-right: 5px;
   margin-bottom: 5px;
 }
+.author-link {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+}
 .author-text {
   color: rgba(0, 0, 0, 0.7);
   font-weight: 600;
+}
+.author-avatar {
+  width: 22px;
+  height: 22px;
+  margin-right: 5px;
 }
 </style>
