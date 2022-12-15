@@ -5,9 +5,15 @@ import {
   ElAvatar,
   ElBadge,
   ElDropdown,
-  ElDropdownItem
+  ElDropdownItem,
+  ElTooltip
 } from 'element-plus'
-import { getUserInfo, getNoticeCount } from '~/popup/apis'
+import {
+  getUserInfo,
+  getNoticeCount,
+  getCheckInStatus,
+  checkInDay
+} from '~/popup/apis'
 import { getLocalObj, setLocalObj, sendMessage } from '~/popup/utils'
 
 interface IUser {
@@ -34,7 +40,8 @@ export default defineComponent({
     ElAvatar,
     ElBadge,
     ElDropdown,
-    ElDropdownItem
+    ElDropdownItem,
+    ElTooltip
   },
   setup() {
     const userInfo = ref<IUser>({
@@ -43,6 +50,7 @@ export default defineComponent({
       power: 0,
       user_id: ''
     })
+    const isCheckIn = ref(true)
     const noticeInfo = ref<INotice>({
       count: {
         1: 0,
@@ -72,15 +80,28 @@ export default defineComponent({
       }
     }
 
+    const initCheckInfo = async () => {
+      const res = await getCheckInStatus()
+      if (res) {
+        isCheckIn.value = res.check_in_done
+      }
+    }
+
     const initCount = async () => {
       const res = await getNoticeCount()
       noticeInfo.value = res
       sendMessage('set-badge-bg', res)
     }
 
+    const handleCheckIn = async () => {
+      const res = await checkInDay()
+      console.log(res)
+    }
+
     onMounted(async () => {
       initUserInfo()
       initCount()
+      initCheckInfo()
     })
 
     const selfPage = computed(() => {
@@ -96,10 +117,12 @@ export default defineComponent({
     }
 
     return {
+      isCheckIn,
       userInfo,
       noticeInfo,
       selfPage,
-      handleNoticeClick
+      handleNoticeClick,
+      handleCheckIn
     }
   }
 })
@@ -109,6 +132,17 @@ export default defineComponent({
   <div class="head-line">
     <div class="head-title">Hello，{{ userInfo.user_name }}</div>
     <div class="right-box">
+      <el-tooltip effect="dark" content="点击可签到" placement="bottom">
+        <el-badge :is-dot="!isCheckIn" class="check-dot">
+          <el-icon
+            :size="22"
+            color="#8a919f"
+            class="checkin-icon"
+            @click="handleCheckIn"
+            ><Calendar
+          /></el-icon>
+        </el-badge>
+      </el-tooltip>
       <el-dropdown trigger="hover">
         <el-badge :hidden="noticeInfo.total === 0" :value="noticeInfo.total">
           <el-icon :size="22" color="#8a919f" class="right-count">
@@ -199,8 +233,13 @@ export default defineComponent({
   font-size: 12px;
 }
 .right-count {
+  margin-left: 10px;
   cursor: pointer;
 }
+.checkin-icon {
+  cursor: pointer;
+}
+
 .right-avatar {
   margin-left: 15px;
 }

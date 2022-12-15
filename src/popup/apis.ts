@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { getLocalObj } from '~/popup/utils'
+import { ElMessage } from 'element-plus'
 
 const methods = ['post', 'get', 'put', 'delete', 'patch']
 
@@ -44,6 +45,10 @@ methods.forEach((method) => {
           return
         }
         if (response.data.err_no !== 200 && response.data.err_no !== 0) {
+          ElMessage({
+            message: response.data.err_msg,
+            type: 'error'
+          })
           reject(response.data)
         }
         resolve(response.data.data || {})
@@ -66,6 +71,14 @@ export const getUserInfo = () => {
 
 export const getNoticeCount = () => {
   return ajax.get(urlSite('juejin', '/interact_api/v1/message/count'))
+}
+
+export const getCheckInStatus = () => {
+  return ajax.get(urlSite('juejin', '/growth_api/v2/get_today_status'))
+}
+
+export const checkInDay = () => {
+  return ajax.post(urlSite('juejin', '/growth_api/v1/check_in'))
 }
 
 export const getUserId = async () => {
