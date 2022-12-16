@@ -6,7 +6,8 @@ import {
   ElBadge,
   ElDropdown,
   ElDropdownItem,
-  ElTooltip
+  ElTooltip,
+  ElMessage
 } from 'element-plus'
 import {
   getUserInfo,
@@ -96,6 +97,10 @@ export default defineComponent({
     const handleCheckIn = async () => {
       const res = await checkInDay()
       console.log(res)
+      ElMessage({
+        message: '签到成功',
+        type: 'success'
+      })
     }
 
     onMounted(async () => {
