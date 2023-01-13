@@ -222,51 +222,47 @@ export default defineComponent({
 
 <template>
   <div class="essay-outer">
-    <div>
-      <div
-        v-for="(item, index) in articleList"
-        :key="item.article_id"
-        class="assay-box"
-      >
-        <div class="essay-list">
-          <a
-            :href="`https://juejin.cn/post/${item.article_id}`"
-            target="_blank"
+    <div
+      v-for="(item, index) in articleList"
+      :key="item.article_id"
+      class="assay-box"
+    >
+      <div class="essay-list">
+        <a :href="`https://juejin.cn/post/${item.article_id}`" target="_blank">
+          <div class="title" :title="item.title">{{ item.title }}</div>
+        </a>
+        <div class="sub-line">
+          <div class="infos">
+            <span>{{ `${item.display_count} 展现` }}</span>
+            <span class="dot">·</span>
+            <span>{{ `${item.view_count} 阅读` }}</span>
+            <span class="dot">·</span>
+            <span>{{ `${item.digg_count} 点赞` }}</span>
+            <span class="dot">·</span>
+            <span>{{ `${item.comment_count} 评论` }}</span>
+            <span class="dot">·</span>
+            <span>{{ `${item.collect_count} 收藏` }}</span>
+          </div>
+          <el-icon
+            class="more-btn"
+            color="#86909c"
+            @click="handleOpenItemChart(index)"
           >
-            <div class="title">{{ item.title }}</div>
-          </a>
-          <div class="sub-line">
-            <div class="infos">
-              <span>{{ item.display_count }}展现</span>
-              <span class="dot">·</span>
-              <span>{{ item.view_count }}阅读</span>
-              <span class="dot">·</span>
-              <span>{{ item.digg_count }}点赞</span>
-              <span class="dot">·</span>
-              <span>{{ item.comment_count }}评论</span>
-              <span class="dot">·</span>
-              <span>{{ item.collect_count }}收藏</span>
-            </div>
-            <el-icon
-              class="more-btn"
-              color="#86909c"
-              @click="handleOpenItemChart(index)"
-              ><MoreFilled
-            /></el-icon>
-          </div>
-          <div :class="showIndex === index ? 'sub-chart-show' : 'sub-chart'">
-            <div :id="`sub-chart-${index}`" class="funnel-chart"></div>
-            <el-radio-group
-              :model-value="dateRange"
-              size="small"
-              @change="handleRangeChange"
-            >
-              <el-radio-button :label="1">最近7天</el-radio-button>
-              <el-radio-button :label="2">最近14天</el-radio-button>
-              <el-radio-button :label="3">最近30天</el-radio-button>
-            </el-radio-group>
-            <div :id="`line-chart-${index}`" class="line-chart"></div>
-          </div>
+            <MoreFilled />
+          </el-icon>
+        </div>
+        <div :class="showIndex === index ? 'sub-chart-show' : 'sub-chart'">
+          <div :id="`sub-chart-${index}`" class="funnel-chart"></div>
+          <el-radio-group
+            :model-value="dateRange"
+            size="small"
+            @change="handleRangeChange"
+          >
+            <el-radio-button :label="1">最近7天</el-radio-button>
+            <el-radio-button :label="2">最近14天</el-radio-button>
+            <el-radio-button :label="3">最近30天</el-radio-button>
+          </el-radio-group>
+          <div :id="`line-chart-${index}`" class="line-chart"></div>
         </div>
       </div>
     </div>
@@ -296,6 +292,7 @@ export default defineComponent({
 }
 .assay-box {
   display: block;
+  overflow: hidden;
   border-bottom: 1px solid #e5e6eb;
 }
 .assay-box:nth-last-child(1) {
