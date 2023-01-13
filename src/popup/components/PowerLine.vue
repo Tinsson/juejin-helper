@@ -179,15 +179,15 @@ export default defineComponent({
 <template>
   <div>
     <div class="shop-tip">
-      <div>
+      <div class="tip-item">
         <span>今日值：</span>
         <span class="power-num">{{ jpower }}</span>
       </div>
-      <div class="growth-box">
+      <div class="tip-item growth-box">
         <span>日均增长：</span>
         <span class="power-num">{{ avgPower }}</span>
       </div>
-      <div class="growth-box">
+      <div class="tip-item growth-box">
         <span>10日增长：</span>
         <span class="power-num">{{ tenSum }}</span>
       </div>
@@ -200,6 +200,10 @@ export default defineComponent({
 .shop-tip {
   display: flex;
   flex-flow: row nowrap;
+}
+.tip-item {
+  display: flex;
+  align-items: center;
 }
 .growth-box {
   margin-left: 15px;

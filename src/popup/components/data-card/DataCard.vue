@@ -113,42 +113,40 @@ export default defineComponent({
 </script>
 
 <template>
-  <div>
-    <el-row :gutter="12">
-      <el-col v-for="item in cardList" :key="item.keyName" :span="8">
-        <el-card
-          shadow="hover"
-          class="card-box"
-          :body-style="{
-            padding: '10px 12px'
-          }"
-          @click="handleCardClick(item.trendKey)"
-        >
-          <div class="card-title">{{ item.name }}</div>
-          <div class="card-data">{{ cardData[item.keyName].cnt }}</div>
-          <div class="card-than">
-            <span class="than-text">较前日</span>
-            <img
-              v-if="cardData[item.keyName].than_before === 0"
-              class="than-img"
-              src="https://lf3-cdn-tos.bytescm.com/obj/static/xitu_juejin_web/7f170698b5ca3a3b477b940de47aab0f.svg"
-            />
-            <img
-              v-if="cardData[item.keyName].than_before > 0"
-              class="than-img"
-              src="https://lf3-cdn-tos.bytescm.com/obj/static/xitu_juejin_web/ba153bc9315679b124ced4214ea52db9.svg"
-            />
-            <span
-              v-if="cardData[item.keyName].than_before !== 0"
-              class="than-vary"
-            >
-              {{ cardData[item.keyName].than_before }}
-            </span>
-          </div>
-        </el-card>
-      </el-col>
-    </el-row>
-  </div>
+  <el-row :gutter="12">
+    <el-col v-for="item in cardList" :key="item.keyName" :span="8">
+      <el-card
+        shadow="hover"
+        class="card-box"
+        :body-style="{
+          padding: '10px 12px'
+        }"
+        @click="handleCardClick(item.trendKey)"
+      >
+        <div class="card-title">{{ item.name }}</div>
+        <div class="card-data">{{ cardData[item.keyName].cnt }}</div>
+        <div class="card-than">
+          <span class="than-text">较前日</span>
+          <img
+            v-if="cardData[item.keyName].than_before === 0"
+            class="than-img"
+            src="https://lf3-cdn-tos.bytescm.com/obj/static/xitu_juejin_web/7f170698b5ca3a3b477b940de47aab0f.svg"
+          />
+          <img
+            v-if="cardData[item.keyName].than_before > 0"
+            class="than-img"
+            src="https://lf3-cdn-tos.bytescm.com/obj/static/xitu_juejin_web/ba153bc9315679b124ced4214ea52db9.svg"
+          />
+          <span
+            v-if="cardData[item.keyName].than_before !== 0"
+            class="than-vary"
+          >
+            {{ cardData[item.keyName].than_before }}
+          </span>
+        </div>
+      </el-card>
+    </el-col>
+  </el-row>
 </template>
 
 <style scoped>

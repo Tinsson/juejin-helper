@@ -87,6 +87,7 @@ export default defineComponent({
 <style scoped>
 .card-box {
   max-height: 350px;
+  overflow: hidden;
   /* overflow-y: scroll; */
 }
 </style>
