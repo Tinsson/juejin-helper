@@ -1,6 +1,6 @@
 {
   "name": "掘友小助手",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "manifest_version": 3,
   "author": "dty6809183@gmail.com",
   "description": "好用的掘金学习运营工具",
@@ -14,30 +14,23 @@
     "default_title": "掘友小助手",
     "default_popup": "/popup/index.html"
   },
-  "permissions": [
-    "tabs",
-    "activeTab",
-    "scripting",
-    "history",
-    "declarativeNetRequest"
-  ],
   "host_permissions": [
-    "https://juejin.cn/",
-    "https://api.juejin.cn/",
-    "https://www.npmjs.com/"
+    "https://juejin.cn/*",
+    "https://api.juejin.cn/*"
   ],
   "background": {
-    "service_worker": "/background/index.js"
+    "service_worker": "/background/index.js",
+    "type": "module"
   },
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
+      "matches": ["https://juejin.cn/*"],
       "js": ["/contentScript/index.js"],
       "run_at": "document_end"
     }
   ],
   "web_accessible_resources": [{
     "resources": ["contentScript/style.css"],
-    "matches": ["<all_urls>"]
+    "matches": ["https://juejin.cn/*"]
   }]
 }

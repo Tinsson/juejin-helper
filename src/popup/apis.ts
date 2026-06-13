@@ -9,13 +9,6 @@ const ajax: Record<
   (url: string, data?: any, options?: any) => Promise<any>
 > = {}
 
-axios.interceptors.request.use(async (req) => {
-  if (req.url.indexOf('juejin.cn') > 0) {
-    await setJuejinOrigin()
-  }
-  return req
-})
-
 methods.forEach((method) => {
   ajax[method] = (url, data, options): Promise<any> => {
     data = data || {}
@@ -59,8 +52,7 @@ methods.forEach((method) => {
 
 const urlSite = (base: string, path: string) => {
   const hostMap = {
-    juejin: 'https://api.juejin.cn',
-    npm: 'https://www.npmjs.com'
+    juejin: 'https://api.juejin.cn'
   }
   return `${hostMap[base]}${path}`
 }
@@ -89,41 +81,6 @@ export const getUserId = async () => {
     const res = await getUserInfo()
     return res.user_id
   }
-}
-
-const setCustomerHeader = async (
-  domain: string,
-  headers: Record<string, string>
-) => {
-  await chrome.declarativeNetRequest.updateDynamicRules({
-    addRules: [
-      {
-        id: 1,
-        priority: 1,
-        action: {
-          type: 'modifyHeaders',
-          requestHeaders: Object.keys(headers).map((name) => {
-            return {
-              header: name,
-              operation: 'set',
-              value: headers[name]
-            }
-          })
-        },
-        condition: {
-          urlFilter: domain,
-          resourceTypes: ['xmlhttprequest']
-        }
-      }
-    ],
-    removeRuleIds: [1]
-  } as any)
-}
-
-const setJuejinOrigin = async (domain = 'juejin.cn') => {
-  await setCustomerHeader(domain, {
-    origin: `https://${domain}`
-  })
 }
 
 export const getArticleList = async (page = 1) => {
@@ -220,24 +177,5 @@ export const getDiggFollowArticles = async (searchWords: string) => {
     limit: 20,
     search_type: 0,
     user_id
-  })
-}
-
-export const getNpmPackages = async (params: {
-  q: string
-  ranking?: string
-}) => {
-  await setCustomerHeader('www.npmjs.com', {
-    origin: 'www.npmjs.com',
-    'x-requested-with': 'XMLHttpRequest',
-    'x-spiferack': '1'
-  })
-  Object.keys(params).forEach((keyName) => {
-    if (params[keyName] === '') {
-      delete params[keyName]
-    }
-  })
-  return ajax.get(urlSite('npm', '/search'), params, {
-    rawResponse: true
   })
 }

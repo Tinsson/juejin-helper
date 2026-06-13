@@ -16,8 +16,6 @@ export interface ISearchItem {
 /** 搜索函数入参 */
 export interface ISearchParams {
   searchWords: string
-  ranking?: string
-  timeEarly?: string
   page?: number
   pageSize?: number
 }

@@ -10,7 +10,7 @@ export const monitorBadgeFresh = () => {
   ]
   if (window.location.host === 'juejin.cn') {
     if (triggerPath.includes(window.location.pathname)) {
-      sendMessage('fresh-badge-bg', {})
+      sendMessage('refresh-badge-bg', {})
     }
   }
 }

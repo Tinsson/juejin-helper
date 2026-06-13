@@ -1,6 +1,3 @@
-import type { ISearchItem } from '~/popup/type'
-import dayjs from 'dayjs'
-
 export const getLocalObj = (keyName: string) => {
   const localStr = localStorage.getItem(keyName)
   if (!localStr) {
@@ -24,31 +21,5 @@ export const sendMessage = (taskId: string, params: any) => {
         resolve(result)
       }
     )
-  })
-}
-
-export const highlightText = (origin: string, words: string) => {
-  try {
-    const reg = new RegExp(`(${words})`, 'gi')
-    const res = origin.replace(reg, '<em>$1</em>')
-    return res
-  } catch (e) {
-    console.log(origin, words)
-    return origin
-  }
-}
-
-export const formatChromeHistoryItem = (
-  searchWords: string,
-  origin: chrome.history.HistoryItem[]
-): ISearchItem[] => {
-  return origin.map((i) => {
-    return {
-      id: i.id,
-      title: highlightText(i.title, searchWords),
-      desc: highlightText(i.url, searchWords),
-      lastTime: dayjs(i.lastVisitTime).format('YYYY-MM-DD HH:mm:ss'),
-      url: i.url
-    }
   })
 }

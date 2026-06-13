@@ -49,9 +49,9 @@ export default defineComponent({
           </div>
           <div class="result-right">
             <h3 class="result-title" :title="item.title">
-              <a :href="item.url" target="_blank" v-html="item.title" />
+              <a :href="item.url" target="_blank">{{ item.title }}</a>
             </h3>
-            <div class="result-desc" v-html="item.desc" />
+            <div class="result-desc">{{ item.desc }}</div>
             <div v-if="item.tags" class="result-tags">
               <a
                 v-for="tag in item.tags"
